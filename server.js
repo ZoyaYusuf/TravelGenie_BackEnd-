@@ -22,8 +22,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 const allowedOrigins = [
-  "http://localhost:5173",               // local frontend
-//   "https://your-app.vercel.app",        // deployed frontend domain
+  "http://localhost:5173",              
+  "https://travel-genie-itinerary.vercel.app/"
 ];
 
 app.use(cors({
