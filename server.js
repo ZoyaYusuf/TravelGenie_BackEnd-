@@ -22,6 +22,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 const allowedOrigins = [
+  "https://travel-genie-front-3lq3zyb29-zoyayusufs-projects.vercel.app",
   "http://localhost:5173",              
   "https://travel-genie-itinerary.vercel.app"
 ];
