@@ -42,10 +42,10 @@ router.post("/signup", async (req, res) => {
 // ---------- LOGIN ----------
 router.post("/login", async (req, res) => {
     try {
-        if(!req.body){
+        const { email, password } = req.body;
+        if(email==""){
             console.log("empty")
         }
-        const { email, password } = req.body;
 
         const user = await User.findOne({ email });
         if (!user) return res.status(401).json({ message: "Invalid email or password" });
