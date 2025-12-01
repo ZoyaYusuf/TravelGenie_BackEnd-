@@ -23,6 +23,7 @@ router.post("/signup", async (req, res) => {
             httpOnly: true,
             secure: true,       // true for http
             sameSite: "none", //none for http
+            path: "/",
             maxAge: 7 * 24 * 60 * 60 * 1000,
         }); 
         res.status(201).json({
@@ -56,6 +57,7 @@ router.post("/login", async (req, res) => {
         httpOnly: true,
         secure: true,           // true for https// false for local
         sameSite: "none",     //none for http //lax for local
+        path: "/",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
         console.log("inside login 5")
