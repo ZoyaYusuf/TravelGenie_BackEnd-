@@ -50,9 +50,12 @@ app.listen(PORT, () => {
 
 const connectDB = async() => {
     try {
-        await mongoose.connect(process.env.MDB_URL);
+        await mongoose.connect(process.env.MDB_URL, { 
+            serverSelectionTimeoutMS: 30000, // Increase to 30 seconds
+            socketTimeoutMS: 45000,
+        });
         console.log("Connected with Database!");
     } catch(err) {
-        console.log("Failed to connect with Db", err);
+        console.error("Failed to connect with Db:", err); // Use console.error for errors
     }
-}
+};
