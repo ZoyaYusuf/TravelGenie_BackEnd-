@@ -21,8 +21,8 @@ router.post("/signup", async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false,       // true for http
-            sameSite: "lax", //none for http
+            secure: true,       // true for http
+            sameSite: "none", //none for http
             maxAge: 7 * 24 * 60 * 60 * 1000,
         }); 
         res.status(201).json({
@@ -54,8 +54,8 @@ router.post("/login", async (req, res) => {
 
         res.cookie("token", token, {
         httpOnly: true,
-        secure: false,           // true for http
-        sameSite: "lax",     //none for http
+        secure: true,           // true for https// false for local
+        sameSite: "none",     //none for http //lax for local
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
     
