@@ -50,14 +50,14 @@ router.post("/login", async (req, res) => {
         const isMatch = await user.matchPassword(password);
         if (!isMatch) return res.status(401).json({ message: "Invalid password" });
         console.log("inside login 3")
-        // const token = generateToken(user._id);
+        const token = generateToken(user._id);
         console.log("inside login 4")
-        // res.cookie("token", token, {
-        // httpOnly: true,
-        // secure: true,           // true for https// false for local
-        // sameSite: "none",     //none for http //lax for local
-        // maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        // });
+        res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,           // true for https// false for local
+        sameSite: "none",     //none for http //lax for local
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        });
         console.log("inside login 5")
         res.json({
             message: "Logged in",
@@ -66,7 +66,7 @@ router.post("/login", async (req, res) => {
                 name: user.name,
                 email: user.email
             },
-            // token
+            token
         }); 
         
     } catch (err) {
