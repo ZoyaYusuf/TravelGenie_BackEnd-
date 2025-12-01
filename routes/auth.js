@@ -42,26 +42,23 @@ router.post("/signup", async (req, res) => {
 // ---------- LOGIN ----------
 router.post("/login", async (req, res) => {
     try {
-        const { email, password } = req.body;
-        if(email==""){
-            console.log("empty")
-        }
-
+        const { email, password } = req.body; 
+        console.log("inside login 1")
         const user = await User.findOne({ email });
         if (!user) return res.status(401).json({ message: "Invalid email or password" });
-
+        console.log("inside login 2")
         const isMatch = await user.matchPassword(password);
         if (!isMatch) return res.status(401).json({ message: "Invalid password" });
-
+        console.log("inside login 3")
         const token = generateToken(user._id);
-
+        console.log("inside login 4")
         res.cookie("token", token, {
         httpOnly: true,
         secure: true,           // true for https// false for local
         sameSite: "none",     //none for http //lax for local
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         });
-    
+        console.log("inside login 5")
         res.json({
             message: "Logged in",
             user: {
@@ -74,6 +71,7 @@ router.post("/login", async (req, res) => {
         
     } catch (err) {
         res.status(500).json({ message: err.message });
+        console.log("error")
     }
 });
 

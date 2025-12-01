@@ -36,6 +36,7 @@ userSchema.pre("save", async function(next){
 
 // Method to compare password for Login
 userSchema.methods.matchPassword = function(enteredPassword){
+    console.log("inside match password")
     return bcrypt.compare(enteredPassword, this.password);
 };
 
