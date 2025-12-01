@@ -42,6 +42,9 @@ router.post("/signup", async (req, res) => {
 // ---------- LOGIN ----------
 router.post("/login", async (req, res) => {
     try {
+        if(!req.body){
+            console.log("empty")
+        }
         const { email, password } = req.body;
 
         const user = await User.findOne({ email });
