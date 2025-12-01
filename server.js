@@ -23,7 +23,7 @@ app.use(cookieParser());
 
 const allowedOrigins = [
   "http://localhost:5173",              
-  "https://travel-genie-itinerary.vercel.app/"
+  "https://travel-genie-itinerary.vercel.app"
 ];
 
 app.use(cors({
