@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import { generateToken } from "../utils/generateToken.js";
 import { protect } from "../middleware/auth.js";
 import jwt from "jsonwebtoken";
+import { protect } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -43,24 +44,19 @@ router.post("/signup", async (req, res) => {
 // ---------- LOGIN ----------
 router.post("/login", async (req, res) => {
     try {
-        const { email, password } = req.body; 
-        console.log("inside login 1")
+        const { email, password } = req.body;  
         const user = await User.findOne({ email });
-        if (!user) return res.status(401).json({ message: "Invalid email or password" });
-        console.log("inside login 2")
+        if (!user) return res.status(401).json({ message: "Invalid email or password" }); 
         const isMatch = await user.matchPassword(password);
-        if (!isMatch) return res.status(401).json({ message: "Invalid password" });
-        console.log("inside login 3")
-        const token = generateToken(user._id);
-        console.log("inside login 4")
+        if (!isMatch) return res.status(401).json({ message: "Invalid password" }); 
+        const token = generateToken(user._id); 
         res.cookie("token", token, {
         httpOnly: true,
         secure: true,           // true for https// false for local
         sameSite: "none",     //none for http //lax for local
         path: "/",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        });
-        console.log("inside login 5")
+        }); 
         res.json({
             message: "Logged in",
             user: {
@@ -77,16 +73,9 @@ router.post("/login", async (req, res) => {
     }
 });
 
-router.get("/check", (req, res) => {
-    const token = req.cookies.token;
-
-    if (!token) {
-        return res.json({ loggedIn: false });
-    }
-
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        return res.json({ loggedIn: true, user: decoded });
+router.get("/check", protect,(req, res) => {  
+    try { 
+        return res.json({ loggedIn: true});
     } catch (err) {
         return res.json({ loggedIn: false });
     }
