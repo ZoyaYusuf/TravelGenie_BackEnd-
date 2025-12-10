@@ -4,7 +4,8 @@ const router = express.Router();
 import { protect } from "../middleware/auth.js";
 
 router.get("/Explore/:id", protect, async(req,res)=>{
-  console.log("in console")
+  console.log("in console");
+  res.json({ ok: true });
 })
 
 router.get("/savedTrip/:userId", protect,async(req,res) =>{

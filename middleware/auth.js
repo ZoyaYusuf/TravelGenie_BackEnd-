@@ -3,17 +3,17 @@ import User from "../models/User.js";
 import dotenv from "dotenv";
 dotenv.config(); 
 
-export const protect = async (req, res, next) => {
-    const authHeader = req.headers.authorization;
+export const protect = (req, res, next) => {
+    const token = req.cookies.token;   // ⬅️ Read token from cookies
 
-    if (!authHeader) return res.status(401).json({ message: "No token provided" });
+    if (!token) {
+        return res.status(401).json({ message: "No token provided" });
+    }
 
-    const token = authHeader.split(" ")[1];
-    
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded.id;
-        next();
+        req.user = decoded.id;  // attach user id
+        next();                 // continue to final route
     } catch (err) {
         return res.status(401).json({ message: "Invalid token" });
     }
