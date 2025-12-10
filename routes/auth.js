@@ -18,14 +18,7 @@ router.post("/signup", async (req, res) => {
         const user = await User.create({ name, email, password });
 
         const token = generateToken(user._id);
-
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: true,       // true for http
-            sameSite: "none", //none for http
-            path: "/",
-            maxAge: 7 * 24 * 60 * 60 * 1000,
-        }); 
+ 
         res.status(201).json({
             message: "User registered",
             user: {
@@ -49,13 +42,7 @@ router.post("/login", async (req, res) => {
         const isMatch = await user.matchPassword(password);
         if (!isMatch) return res.status(401).json({ message: "Invalid password" }); 
         const token = generateToken(user._id); 
-        res.cookie("token", token, {
-        httpOnly: true,
-        secure: true,           // true for https// false for local
-        sameSite: "none",     //none for http //lax for local
-        path: "/",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        }); 
+         
         res.json({
             message: "Logged in",
             user: {
@@ -72,13 +59,21 @@ router.post("/login", async (req, res) => {
     }
 });
 
-router.get("/check", protect,(req, res) => {  
-    try { 
-        return res.json({ loggedIn: true});
-    } catch (err) {
-        return res.json({ loggedIn: false });
+router.get("/check",(req, res) => {  
+    const authHeader = req.headers.Authorization;
+    
+        if (!authHeader) return res.status(401).json({ message: "No token provided" });
+    
+        const token = authHeader.split(" ")[1];
+        
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            req.user = decoded.id; 
+        } catch (err) {
+            return res.status(401).json({ message: "Invalid token" });
+        }
     }
-});
+);
 
 
 
