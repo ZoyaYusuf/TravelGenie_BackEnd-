@@ -60,7 +60,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/check",(req, res) => {  
-    const authHeader = req.headers.Authorization;
+    const authHeader = req.headers.authorization;
     
         if (!authHeader) return res.status(401).json({ message: "No token provided" });
     
